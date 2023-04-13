@@ -73,12 +73,12 @@ x_train, x_test, y_train, y_test = train_test_split(
 )
 
 
-# for col in list(x.drop("Gender", axis=1).columns):
-#     detect_outliers(x[col])
-#     fig=plt.figure(figsize =(10,7))
-#     plt.boxplot(x[col].to_numpy())
-#     plt.title(str(col))
-#     plt.show()
+for col in list(x.drop("Gender", axis=1).columns):
+    detect_outliers(x[col])
+    fig=plt.figure(figsize =(10,7))
+    plt.boxplot(x[col].to_numpy())
+    plt.title(str(col))
+    plt.show()
 
 sns.set_theme(style="ticks")
 sns.pairplot(dataset, hue='CLASS')
