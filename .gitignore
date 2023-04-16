@@ -1,5 +1,5 @@
 # files and folders
-*.vs
+/.vs/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
