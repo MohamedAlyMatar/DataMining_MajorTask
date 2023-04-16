@@ -34,7 +34,7 @@ def main():
         detect_outliers(dataset[col])
         fig = plt.figure(figsize=(10, 7))
         plt.boxplot(dataset[col].to_numpy())
-        plt.title(str(col) + "Box Plot")
+        plt.title(str(col)+' ' + "Box Plot")
         plt.show()
 
 

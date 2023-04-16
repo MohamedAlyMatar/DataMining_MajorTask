@@ -8,7 +8,7 @@ import seaborn as sns
 
 
 # reading data from csv file
-dataset = pd.read_csv('dataset/Dataset of Diabetes.csv')
+dataset = pd.read_csv('../dataset/Dataset of Diabetes.csv')
 
 
 # checking if any value is empty
