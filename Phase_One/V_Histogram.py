@@ -4,7 +4,6 @@ import seaborn as sns
 
 
 def main():
-
     plt.rcParams['font.size'] = 11
     plt.rcParams['figure.dpi'] = 75
     dataset.hist(figsize=(20,10))
