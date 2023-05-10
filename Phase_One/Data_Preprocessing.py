@@ -39,7 +39,7 @@ for val in dataset[['CLASS']].values.tolist():
 # no value is labelled incorrectly
 
 
-# remove unnecessary id and patien number columns
+# remove unnecessary id and patient number columns
 dataset = dataset.iloc[:,2:]
 
 
