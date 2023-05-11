@@ -1,5 +1,6 @@
 from Data_Preprocessing import dataset
 from sklearn.ensemble import IsolationForest
+import pandas as pd
 
 dataset2 = dataset.copy()
 dataset2 = dataset2.drop(['CLASS'], axis=1)
@@ -10,7 +11,7 @@ anomaly = model.predict(dataset2)
 
 dataset2['scores'] = scores
 dataset2['anomaly'] = anomaly
-print(dataset2)
+# print(dataset2)
 
 anomaly = dataset2.loc[dataset2['anomaly'] == -1]
 anomaly_index = list(anomaly.index)
@@ -20,5 +21,8 @@ dataset2['CLASS']=dataset['CLASS']
 cleaned_dataset=dataset2.drop(anomaly_index, axis = 0).reset_index(drop=True)
 cleaned_dataset=cleaned_dataset.drop(['scores','anomaly'],axis=1)
 
-print(cleaned_dataset)
+# print(cleaned_dataset)
 
+cleaned_dataset.to_csv('../dataset/cleaned_dataset.csv',index=False)
+df = pd.read_csv('../dataset/cleaned_dataset.csv')
+# print(df.iloc[0,:])
