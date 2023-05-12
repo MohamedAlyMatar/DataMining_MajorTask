@@ -34,7 +34,9 @@ outer_cv = KFold(n_splits=9, shuffle=True, random_state=42)
 #-----------------------------------------------------------------------------------------------------#
 
 # call our custom function
-cv_scores, avg_score = nested_cross_validation(X_train, y_train, model, param_grid, outer_cv)
+cv_scores, avg_score, best_x, best_y = nested_cross_validation(X_train, y_train, model, param_grid, outer_cv)
 print(cv_scores, avg_score)
+print(best_x)
+print(best_y)
 
 #-----------------------------------------------------------------------------------------------------#

@@ -4,6 +4,9 @@ from sklearn.model_selection import GridSearchCV, cross_val_score
 def nested_cross_validation(x_train, y_train, model, param_grid, outer_cv, inner_cv=None, scoring='accuracy'):
     # Outer loop: model evaluation
     outer_scores = []
+    best_score = 0
+    best_data = None
+    best_target = None
     
     # the same number of folds, shuffling, and random state as the outer loop 
     # so it's like we are not using an inner loop
@@ -19,11 +22,16 @@ def nested_cross_validation(x_train, y_train, model, param_grid, outer_cv, inner
         grid_search.fit(X_train_fold, y_train_fold)
 
         # Evaluate the model with the best hyperparameters on the validation fold
-        best_model = grid_search.best_estimator_
-        score = best_model.score(X_val_fold, y_val_fold)
+    
+        score = grid_search.best_estimator_.score(X_val_fold, y_val_fold)
         outer_scores.append(score)
+        if score > best_score:
+            best_score = score
+            best_data = X_train_fold
+            best_target = y_train_fold
+            best_model = grid_search.best_estimator_
 
     cv_scores = cross_val_score(model, x_train, y_train, cv=outer_cv, scoring=scoring)
     avg_score = np.mean(outer_scores)
-
-    return cv_scores, avg_score
+    best_model.fit(best_data, best_target)
+    return cv_scores, avg_score, best_data, best_target
