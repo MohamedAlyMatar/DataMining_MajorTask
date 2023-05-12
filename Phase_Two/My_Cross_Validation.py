@@ -10,12 +10,13 @@ def nested_cross_validation(data, target, model, folds):
     
     for _ in folds.split(data):
 
+        # split the data on each fold
         x_train_fold, x_val_fold, y_train_fold, y_val_fold = train_test_split(data, target, test_size=0.2, random_state=42)
 
-        # Inner loop: model training
+        # fit the model with each fold
         model.fit(x_train_fold, y_train_fold)
 
-        # Evaluate the model on the validation fold
+        # Evaluate the model on each validation fold
         score = model.score(x_val_fold, y_val_fold)
         outer_scores.append(score)
         if score > best_score:
@@ -26,6 +27,7 @@ def nested_cross_validation(data, target, model, folds):
             best_test_target = y_val_fold
             best_model = model
     
+    # fit the best model on the overall best training data and target
     best_model.fit(best_train_data, best_train_target)
 
     return best_train_data, best_train_target, best_test_data, best_test_target
