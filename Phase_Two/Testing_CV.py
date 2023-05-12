@@ -13,11 +13,7 @@ dataset = pd.read_csv('../dataset/cleaned_dataset.csv')
 x_train = dataset.drop('CLASS', axis=1)
 y_train = dataset['CLASS']
 
-#-----------------------------------------------------------------------------------------------------#
-# prepare your dataset
-
-# Split the dataset into a training set and a testing set
-X_train, X_test, y_train, y_test = train_test_split(x_train, y_train, test_size=0.2, random_state=42)
+#---------------------------------- prepare your dataset -------------------------------------------#
 
 # Define the model and hyperparameter grid
 
@@ -34,9 +30,11 @@ outer_cv = KFold(n_splits=9, shuffle=True, random_state=42)
 #-----------------------------------------------------------------------------------------------------#
 
 # call our custom function
-cv_scores, avg_score, best_x, best_y = nested_cross_validation(X_train, y_train, model, param_grid, outer_cv)
+cv_scores, avg_score, best_train_x, best_train_y, best_test_x, best_test_y = nested_cross_validation(x_train, y_train, model, param_grid, outer_cv)
 print(cv_scores, avg_score)
-print(best_x)
-print(best_y)
+print("Best training data set:\n", best_train_x)
+print("Best training target set:\n", best_train_y)
+print("Best testing data set:\n", best_test_x)
+print("Best testing target set:\n", best_test_y)
 
 #-----------------------------------------------------------------------------------------------------#
