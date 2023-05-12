@@ -15,23 +15,16 @@ target = dataset['CLASS']
 
 #---------------------------------- prepare your dataset -------------------------------------------#
 
-# Define the model and hyperparameter grid
-
-# model = SVC()
-# param_grid = {'C': [0.1, 1, 10], 'gamma': [0.1, 1, 10]}
-
+# Define the model
 model = DecisionTreeClassifier()
-param_grid = {'max_depth': [None, 5, 10], 'min_samples_split': [2, 5, 10]}
 
 # define the folds/splits
-outer_cv = KFold(n_splits=9, shuffle=True, random_state=42)
-# inner_cv = KFold(n_splits=5, shuffle=True, random_state=42)
+folds = KFold(n_splits=9, shuffle=True, random_state=42)
 
 #-----------------------------------------------------------------------------------------------------#
 
-# call our custom function
-cv_scores, avg_score, best_train_x, best_train_y, best_test_x, best_test_y = nested_cross_validation(data, target, model, param_grid, outer_cv)
-print(cv_scores, avg_score)
+# call our custom function to get the best folds
+best_train_x, best_train_y, best_test_x, best_test_y = nested_cross_validation(data, target, model, folds)
 print("Best training data set:\n", best_train_x)
 print("Best training target set:\n", best_train_y)
 print("Best testing data set:\n", best_test_x)
