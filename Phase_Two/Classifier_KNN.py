@@ -1,8 +1,11 @@
-from Multivariate_Outliers import cleaned_dataset
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
+import pandas as pd
 from sklearn.model_selection import cross_val_score
+
+# import dataset
+cleaned_dataset = pd.read_csv('../dataset/cleaned_dataset.csv')
 
 # initializations
 K_N = 20
