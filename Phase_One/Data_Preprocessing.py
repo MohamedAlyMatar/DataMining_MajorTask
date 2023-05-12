@@ -41,14 +41,3 @@ for val in dataset[['CLASS']].values.tolist():
 
 # remove unnecessary id and patient number columns
 dataset = dataset.iloc[:,2:]
-
-
-# splitting the data into training and tesing
-x = dataset.drop('CLASS', axis=1)
-y = dataset[['CLASS']]
-x_train, x_test, y_train, y_test = train_test_split(
-    x, y, test_size=0.2, random_state=0
-)
-
-
-

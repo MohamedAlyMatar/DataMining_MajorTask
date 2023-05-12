@@ -1,20 +1,54 @@
 from Multivariate_Outliers import cleaned_dataset
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import MinMaxScaler
+import matplotlib.pyplot as plt
+from sklearn.model_selection import cross_val_score
+
+# initializations
+K_N = 20
+accuracies = []
+mean_accuracies = []
+K_arr = []
+
+age = cleaned_dataset[['AGE']]
+cr = cleaned_dataset[['Cr']]
+bmi = cleaned_dataset[['BMI']]
+
+# Data Normalization
+normalizer = MinMaxScaler(feature_range=(0, 10))
+age = normalizer.fit_transform(age)
+cr = normalizer.fit_transform(cr)
+bmi = normalizer.fit_transform(bmi)
+cleaned_dataset[['AGE']] = age
+cleaned_dataset[['Cr']] = cr
+cleaned_dataset[['BMI']] = bmi
 
 X = cleaned_dataset.drop('CLASS',axis=1)
 Y = cleaned_dataset[['CLASS']]
 
-X_train, X_test, Y_train, Y_test = train_test_split(
-    X, Y, test_size=0.2, random_state=0
-)
+# KNN classification + cross validation
+for i in range(1, K_N+1):
+    K_arr.append(i)
+    KNN = KNeighborsClassifier(n_neighbors=i)
+    scores = cross_val_score(KNN, X, Y, cv=30)
 
-KNN = KNeighborsClassifier(n_neighbors=3)
-KNN.fit(X_train,Y_train)
+    accuracies.append(scores)
 
-KNN_RES = KNN.predict(X_test)
-print("KNN Results: \n", KNN_RES)
-
-accuracy = accuracy_score(Y_test,KNN_RES)
-print("Accuracy: ", accuracy)
+# Display mean and standard devation of accuracies for each K
+for i in range(len(accuracies)):
+    s = f'Accuracy for K={i+1}:'
+    print(s)
+    print('-'*len(s))
+    mean_accuracies.append(accuracies[i].mean()*100)
+    print(f"""Mean Accuracy: {round(accuracies[i].mean()*100)} %
+Standard Deviation: {accuracies[i].std()}\n""")
+    
+# Plot the relation between K and mean accuracies
+plt.figure('KNN',figsize=(10, 6))
+plt.plot(K_arr, mean_accuracies)
+plt.title('K Nearest Neigbors Classifier')
+plt.xlabel('K (Number of Nearest Neighbors)')
+plt.ylabel('Mean Accuracy (%)')
+plt.xticks(range(0, K_N+2))
+plt.grid()
+plt.show()
