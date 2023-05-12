@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.model_selection import GridSearchCV, cross_val_score, train_test_split
 
-def nested_cross_validation(x_train, y_train, model, param_grid, outer_cv, inner_cv=None, scoring='accuracy'):
+def nested_cross_validation(data, target, model, param_grid, outer_cv, inner_cv=None, scoring='accuracy'):
     # Outer loop: model evaluation
     outer_scores = []
     best_score = 0
@@ -15,8 +15,8 @@ def nested_cross_validation(x_train, y_train, model, param_grid, outer_cv, inner
     if inner_cv is None:
         inner_cv = outer_cv
     
-    for _ in outer_cv.split(x_train):
-        x_train_fold, x_val_fold, y_train_fold, y_val_fold = train_test_split(x_train, y_train, test_size=0.2, random_state=42)
+    for _ in outer_cv.split(data):
+        x_train_fold, x_val_fold, y_train_fold, y_val_fold = train_test_split(data, target, test_size=0.2, random_state=42)
 
         # Inner loop: hyperparameter tuning
         grid_search = GridSearchCV(model, param_grid, cv=inner_cv)
@@ -34,7 +34,7 @@ def nested_cross_validation(x_train, y_train, model, param_grid, outer_cv, inner
             best_test_target = y_val_fold
             best_model = grid_search.best_estimator_
 
-    cv_scores = cross_val_score(model, x_train, y_train, cv=outer_cv, scoring=scoring)
+    cv_scores = cross_val_score(model, data, target, cv=outer_cv, scoring=scoring)
     avg_score = np.mean(outer_scores)
     best_model.fit(best_train_data, best_train_target)
 

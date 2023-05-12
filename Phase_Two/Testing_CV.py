@@ -10,8 +10,8 @@ from My_Cross_Validation import *
 # reading data from csv file
 dataset = pd.read_csv('../dataset/cleaned_dataset.csv')
 
-x_train = dataset.drop('CLASS', axis=1)
-y_train = dataset['CLASS']
+data = dataset.drop('CLASS', axis=1)
+target = dataset['CLASS']
 
 #---------------------------------- prepare your dataset -------------------------------------------#
 
@@ -30,7 +30,7 @@ outer_cv = KFold(n_splits=9, shuffle=True, random_state=42)
 #-----------------------------------------------------------------------------------------------------#
 
 # call our custom function
-cv_scores, avg_score, best_train_x, best_train_y, best_test_x, best_test_y = nested_cross_validation(x_train, y_train, model, param_grid, outer_cv)
+cv_scores, avg_score, best_train_x, best_train_y, best_test_x, best_test_y = nested_cross_validation(data, target, model, param_grid, outer_cv)
 print(cv_scores, avg_score)
 print("Best training data set:\n", best_train_x)
 print("Best training target set:\n", best_train_y)
