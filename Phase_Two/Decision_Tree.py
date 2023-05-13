@@ -26,12 +26,10 @@ X_train, X_test, y_train, y_test = train_test_split(data, target, test_size=0.2,
 
 # Create Decision Tree classifer object
 clf = DecisionTreeClassifier(criterion="entropy")
-
-param_grid = {'max_depth': [None, 5, 10], 'min_samples_split': [2, 5, 10]}
-outer_cv = KFold(n_splits=9, shuffle=True, random_state=42)
+folds = KFold(n_splits=5, shuffle=True, random_state=42)
 
 # Cross Validation
-cv_scores, avg_score,best_training_x, best_training_y, best_testing_x,best_testing_y = nested_cross_validation(X_train, y_train, clf, param_grid, outer_cv)
+cv_scores, avg_score,best_testing_x,best_testing_y = nested_cross_validation(X_train, y_train, clf,folds)
 
 #Predict the response for test dataset
 y_pred = clf.predict(best_testing_x)
